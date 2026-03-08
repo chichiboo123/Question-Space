@@ -90,6 +90,7 @@ const translations = {
   topicEmotion: { ko: "💗 마음·감정", en: "💗 Emotions", ja: "💗 心·感情" },
   topicArt: { ko: "🎨 예술", en: "🎨 Art", ja: "🎨 芸術" },
   topicSchool: { ko: "🏫 학교", en: "🏫 School", ja: "🏫 学校" },
+  topicWorry: { ko: "😔 고민", en: "😔 Worries", ja: "😔 悩み" },
   topicEtc: { ko: "✨ 기타", en: "✨ Other", ja: "✨ その他" },
 } as const;
 
