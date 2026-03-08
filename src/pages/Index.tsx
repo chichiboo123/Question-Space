@@ -258,6 +258,18 @@ export default function Index() {
           </div>
         )}
 
+        {/* Footer */}
+        <footer className="mt-12 mb-4 text-center">
+          <a
+            href="https://litt.ly/chichiboo"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+          >
+            created by. 교육뮤지컬 꿈꾸는 치수쌤
+          </a>
+        </footer>
+
         <button
           onClick={() => navigate("/admin")}
           className="fixed bottom-4 right-4 p-2 rounded-full text-muted-foreground/30 hover:text-muted-foreground/60 transition-colors z-20"
