@@ -147,7 +147,12 @@ export default function QuestionDetail() {
                   transition={{ delay: i * 0.05 }}
                   className="bg-muted/50 rounded-xl p-3 border border-border"
                 >
-                  <p className="text-foreground text-sm">{c.text}</p>
+                  <p className="text-foreground text-sm">
+                    {translationLang === "ko" && c.text_ko ? c.text_ko
+                      : translationLang === "en" && c.text_en ? c.text_en
+                      : translationLang === "ja" && c.text_ja ? c.text_ja
+                      : c.text}
+                  </p>
                   <p className="text-xs text-muted-foreground mt-1">
                     {c.author} · {new Date(c.createdAt).toLocaleDateString(lang === "ja" ? "ja-JP" : lang === "en" ? "en-US" : "ko-KR")}
                   </p>
