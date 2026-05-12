@@ -9,6 +9,7 @@ export interface Comment {
   text_ko?: string;
   text_en?: string;
   text_ja?: string;
+  text_id?: string;
 }
 
 export interface Question {
@@ -21,6 +22,7 @@ export interface Question {
   text_ko?: string;
   text_en?: string;
   text_ja?: string;
+  text_id?: string;
 }
 
 function safeString(value: unknown): string {
@@ -50,6 +52,7 @@ function sanitizeComment(raw: any): Comment | null {
     text_ko: safeString(raw?.text_ko),
     text_en: safeString(raw?.text_en),
     text_ja: safeString(raw?.text_ja),
+    text_id: safeString(raw?.text_id),
   };
 }
 
@@ -70,6 +73,7 @@ function sanitizeQuestion(raw: any): Question | null {
     text_ko: safeString(raw?.text_ko),
     text_en: safeString(raw?.text_en),
     text_ja: safeString(raw?.text_ja),
+    text_id: safeString(raw?.text_id),
   };
 }
 

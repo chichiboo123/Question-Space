@@ -211,6 +211,7 @@ export default function QuestionDetail() {
     if (translationLang === "ko" && question.text_ko) return question.text_ko;
     if (translationLang === "en" && question.text_en) return question.text_en;
     if (translationLang === "ja" && question.text_ja) return question.text_ja;
+    if (translationLang === "id" && question.text_id) return question.text_id;
     return question.text;
   };
 
@@ -219,17 +220,19 @@ export default function QuestionDetail() {
     if (translationLang === "ko" && c.text_ko) return c.text_ko;
     if (translationLang === "en" && c.text_en) return c.text_en;
     if (translationLang === "ja" && c.text_ja) return c.text_ja;
+    if (translationLang === "id" && c.text_id) return c.text_id;
     return c.text;
   };
 
   const topicLang: Lang = translationLang === "original" ? lang : translationLang;
-  const dateLang = lang === "ja" ? "ja-JP" : lang === "en" ? "en-US" : "ko-KR";
+  const dateLang = lang === "ja" ? "ja-JP" : lang === "en" ? "en-US" : lang === "id" ? "id-ID" : "ko-KR";
 
   const langButtons: { value: DisplayLang; label: string }[] = [
     { value: "original", label: t("origLang") },
     { value: "ko", label: "KO" },
     { value: "en", label: "EN" },
     { value: "ja", label: "JP" },
+    { value: "id", label: "ID" },
   ];
 
   return (
