@@ -126,6 +126,9 @@ const translations = {
   topicSchool: { ko: "🏫 학교", en: "🏫 School", ja: "🏫 学校", id: "🏫 Sekolah" },
   topicWorry: { ko: "😔 고민", en: "😔 Worries", ja: "😔 悩み", id: "😔 Kekhawatiran" },
   topicEtc: { ko: "✨ 기타", en: "✨ Other", ja: "✨ その他", id: "✨ Lainnya" },
+
+  // Load more
+  loadMore: { ko: "더보기", en: "Load more", ja: "もっと見る", id: "Lihat lagi" },
 } as const;
 
 type TranslationKey = keyof typeof translations;
