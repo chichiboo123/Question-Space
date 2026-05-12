@@ -22,6 +22,7 @@ export default function Index() {
   const [launching, setLaunching] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
+  const [visibleCount, setVisibleCount] = useState(9);
 
   useEffect(() => {
     apiGetAllQuestions().then(data => {
@@ -240,27 +241,45 @@ export default function Index() {
         {questions.length > 0 && (
           <div className="w-full max-w-3xl">
             <h2 className="text-lg text-muted-foreground mb-1 text-center">
-              🛰️ {t("recentSatellites")} ({questions.length > 9 ? 9 : questions.length})
+              🛰️ {t("recentSatellites")} ({Math.min(visibleCount, questions.length)})
             </h2>
             <p className="text-xs text-accent mb-4 text-center">
               {t("recentSatellitesGuide")}
             </p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {questions.slice(0, 9).map((q, i) => (
-                <motion.div
-                  key={q.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.08 }}
-                  onClick={() => navigate(`/question/${q.id}`)}
-                  className="bg-card/60 backdrop-blur border border-border rounded-xl p-4 cursor-pointer hover:border-primary transition-all hover:scale-105 flex flex-col items-center text-center gap-2"
-                >
-                  <SatelliteIcon index={i} size={40} />
-                  <p className="text-sm text-foreground line-clamp-2 break-words">{q.text}</p>
-                  <span className="text-xs text-muted-foreground">{q.author}</span>
-                </motion.div>
-              ))}
+              {questions.slice(0, visibleCount).map((q, i) => {
+                const displayText =
+                  (lang === "en" && q.text_en) ? q.text_en :
+                  (lang === "ja" && q.text_ja) ? q.text_ja :
+                  (lang === "id" && q.text_id) ? q.text_id :
+                  (lang === "ko" && q.text_ko) ? q.text_ko :
+                  q.text;
+                return (
+                  <motion.div
+                    key={q.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: (i % 9) * 0.08 }}
+                    onClick={() => navigate(`/question/${q.id}`)}
+                    className="bg-card/60 backdrop-blur border border-border rounded-xl p-4 cursor-pointer hover:border-primary transition-all hover:scale-105 flex flex-col items-center text-center gap-2"
+                  >
+                    <SatelliteIcon index={i} size={40} />
+                    <p className="text-sm text-foreground line-clamp-2 break-words">{displayText}</p>
+                    <span className="text-xs text-muted-foreground">{q.author}</span>
+                  </motion.div>
+                );
+              })}
             </div>
+            {visibleCount < questions.length && (
+              <div className="flex justify-center mt-6">
+                <button
+                  onClick={() => setVisibleCount(prev => prev + 9)}
+                  className="px-6 py-2.5 rounded-full bg-card border border-border hover:border-primary text-muted-foreground hover:text-foreground text-sm transition-all"
+                >
+                  {t("loadMore")} ({questions.length - visibleCount})
+                </button>
+              </div>
+            )}
           </div>
         )}
 
