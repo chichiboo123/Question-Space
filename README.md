@@ -18,21 +18,29 @@
 
 ### 질문 탐험 (Explore)
 - 전체 질문 목록 조회 및 카테고리 필터링
+- 더보기로 순차 로딩 지원
 
 ### 랜덤 질문 (Random)
 - 무작위 질문을 뽑아 바로 답변할 수 있는 모드
 
 ### 답변 (Comments)
-- 질문 상세 페이지에서 답변 작성
+- 질문 상세 페이지에서 답변 작성 및 수정
 - **중복 답변 방지**: 동일한 내용의 답변은 등록 불가
 - **쿨다운**: 답변 등록 후 20초간 재작성 대기
 - **연속 클릭 방지**: 전송 중 버튼 비활성화
+- 답변은 500자 이내 제한
+
+### 내 글 관리 (Ownership)
+- 내가 작성한 질문 및 답변에 **내 글** 배지 표시
+- 내 질문/답변 수정 및 삭제 가능
+- localStorage 기반으로 내 글 식별
 
 ### 다국어 지원
-- 한국어 / English / 日本語 언어 전환 지원
+- 한국어(KOR) / English(ENG) / 日本語(JPN) / Bahasa Indonesia(IDN) 언어 전환 지원
+- 선택한 언어는 localStorage에 저장되어 유지
 
 ### 관리자 모드
-- 비밀번호 인증 후 질문 삭제 및 수정 가능
+- 비밀번호 인증 후 모든 질문 삭제 및 수정 가능
 
 ---
 
@@ -63,9 +71,10 @@
 | 스타일 | Tailwind CSS |
 | UI 컴포넌트 | shadcn/ui + Radix UI |
 | 애니메이션 | Framer Motion |
-| 라우팅 | React Router v6 |
+| 라우팅 | React Router v6 (HashRouter) |
 | 상태관리 | React Query (TanStack) |
 | 알림 | Sonner |
+| 백엔드 | Google Apps Script (REST API) |
 | 테스트 | Vitest + Testing Library |
 
 ---
@@ -101,16 +110,20 @@ src/
 │   ├── Questions.tsx      # 질문 탐험
 │   ├── QuestionDetail.tsx # 질문 상세 + 답변
 │   ├── RandomQuestion.tsx # 랜덤 질문
-│   └── Admin.tsx          # 관리자 모드
+│   ├── Admin.tsx          # 관리자 모드
+│   └── NotFound.tsx       # 404 페이지
 ├── components/
 │   ├── StarField.tsx      # 별 배경 애니메이션
 │   ├── SatelliteIcon.tsx  # 위성 아이콘
 │   ├── LangSwitcher.tsx   # 언어 전환
+│   ├── NavLink.tsx        # 네비게이션 링크
 │   └── HelpButton.tsx     # 도움말
 └── lib/
-    ├── api.ts             # API 연동
-    ├── i18n.tsx           # 다국어 지원
-    └── questions.ts       # 카테고리 데이터
+    ├── api.ts             # Google Apps Script API 연동
+    ├── i18n.tsx           # 다국어 지원 (ko/en/ja/id)
+    ├── ownership.ts       # 내 질문/답변 식별 (localStorage)
+    ├── questions.ts       # 카테고리 데이터
+    └── utils.ts           # 유틸리티
 ```
 
 ---
