@@ -9,7 +9,7 @@ import { useLang } from "@/lib/i18n";
 
 export default function RandomQuestion() {
   const navigate = useNavigate();
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const [question, setQuestion] = useState<Question | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -49,7 +49,13 @@ export default function RandomQuestion() {
             onClick={() => navigate(`/question/${question.id}`)}
           >
             <SatelliteIcon size={64} />
-            <p className="text-xl text-foreground mt-4 leading-relaxed break-words">{question.text}</p>
+            <p className="text-xl text-foreground mt-4 leading-relaxed break-words">
+              {(lang === "en" && question.text_en) ? question.text_en :
+               (lang === "ja" && question.text_ja) ? question.text_ja :
+               (lang === "id" && question.text_id) ? question.text_id :
+               (lang === "ko" && question.text_ko) ? question.text_ko :
+               question.text}
+            </p>
             <p className="text-sm text-muted-foreground mt-3">
               {question.author} · 💬 {question.comments?.length || 0}
             </p>

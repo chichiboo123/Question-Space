@@ -34,7 +34,7 @@ export default function QuestionDetail() {
   const [commentText, setCommentText] = useState("");
   const [question, setQuestion] = useState<Question | null>(null);
   const [loading, setLoading] = useState(true);
-  const [translationLang, setTranslationLang] = useState<DisplayLang>("original");
+  const [translationLang, setTranslationLang] = useState<DisplayLang>(lang);
   const [lastCommentTime, setLastCommentTime] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
 

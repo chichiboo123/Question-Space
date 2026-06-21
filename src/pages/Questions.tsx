@@ -88,7 +88,13 @@ export default function Questions() {
               >
                 <SatelliteIcon index={i} size={36} />
                 <div className="flex-1 min-w-0">
-                  <p className="text-foreground line-clamp-2 break-words">{q.text}</p>
+                  <p className="text-foreground line-clamp-2 break-words">
+                    {(lang === "en" && q.text_en) ? q.text_en :
+                     (lang === "ja" && q.text_ja) ? q.text_ja :
+                     (lang === "id" && q.text_id) ? q.text_id :
+                     (lang === "ko" && q.text_ko) ? q.text_ko :
+                     q.text}
+                  </p>
                   <div className="flex gap-2 mt-1 flex-wrap items-center">
                     <span className="text-xs text-muted-foreground">{q.author}</span>
                     {isMyQuestion(q.id) && (
