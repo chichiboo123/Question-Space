@@ -113,6 +113,12 @@ const translations = {
   adminSaved: { ko: "수정 완료! ✏️", en: "Saved! ✏️", ja: "修正完了！✏️", id: "Disimpan! ✏️" },
   adminLoginSuccess: { ko: "관리자 모드 활성화! 🔓", en: "Admin mode activated! 🔓", ja: "管理者モード有効化！🔓", id: "Mode admin diaktifkan! 🔓" },
   adminLoginFail: { ko: "비밀번호가 틀렸어요! 🔒", en: "Wrong password! 🔒", ja: "パスワードが違います！🔒", id: "Kata sandi salah! 🔒" },
+  adminLoginError: {
+    ko: "지금은 로그인할 수 없어요. 잠시 후 다시 시도해 주세요.",
+    en: "Can't log in right now. Please try again later.",
+    ja: "今はログインできません。しばらくしてからもう一度お試しください。",
+    id: "Tidak bisa masuk sekarang. Silakan coba lagi nanti.",
+  },
 
   // Topics
   topicImagination: { ko: "💭 상상", en: "💭 Imagination", ja: "💭 想像", id: "💭 Imajinasi" },

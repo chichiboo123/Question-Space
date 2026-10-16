@@ -104,11 +104,22 @@ async function fetchGet(action: string, params: Record<string, string> = {}): Pr
 }
 
 async function fetchPost(body: Record<string, any>): Promise<any> {
-  return fetchJson(API_URL, {
+  const data = await fetchJson(API_URL, {
     method: "POST",
     headers: { "Content-Type": "text/plain;charset=utf-8" },
     body: JSON.stringify(body),
   });
+  // Apps Script는 HTTP 상태 코드를 바꿀 수 없어 실패도 200 + { error }로 돌려준다
+  if (data && typeof data === "object" && typeof data.error === "string") {
+    throw new Error(data.error);
+  }
+  return data;
+}
+
+// 수정·삭제 권한: 작성자 토큰 또는 관리자 비밀번호 중 하나를 서버에 보낸다
+export interface AuthCredentials {
+  ownerToken?: string;
+  adminPassword?: string;
 }
 
 export async function apiGetAllQuestions(): Promise<Question[]> {
@@ -136,32 +147,45 @@ export async function apiGetQuestionsByTopic(topic: string): Promise<Question[]>
   return data.map(sanitizeQuestion).filter(Boolean) as Question[];
 }
 
-export async function apiAddQuestion(author: string, text: string, topics: string[]): Promise<Question> {
+export async function apiAddQuestion(
+  author: string,
+  text: string,
+  topics: string[]
+): Promise<{ question: Question; ownerToken: string }> {
   const data = await fetchPost({ action: "addquestion", author, text, topics });
   const sanitized = sanitizeQuestion(data);
   if (!sanitized) throw new Error("Invalid addquestion response");
-  return sanitized;
+  return { question: sanitized, ownerToken: safeString(data?.ownerToken) };
 }
 
-export async function apiAddComment(questionId: string, author: string, text: string): Promise<Comment> {
+export async function apiAddComment(
+  questionId: string,
+  author: string,
+  text: string
+): Promise<{ comment: Comment; ownerToken: string }> {
   const data = await fetchPost({ action: "addcomment", questionId, author, text });
   const sanitized = sanitizeComment(data);
   if (!sanitized) throw new Error("Invalid addcomment response");
-  return sanitized;
+  return { comment: sanitized, ownerToken: safeString(data?.ownerToken) };
 }
 
-export async function apiDeleteQuestion(id: string): Promise<any> {
-  return fetchPost({ action: "deletequestion", id });
+export async function apiAdminLogin(adminPassword: string): Promise<boolean> {
+  const data = await fetchPost({ action: "adminlogin", adminPassword });
+  return data?.ok === true;
 }
 
-export async function apiUpdateQuestion(id: string, text: string, topics: string[]): Promise<any> {
-  return fetchPost({ action: "updatequestion", id, text, topics });
+export async function apiDeleteQuestion(id: string, auth: AuthCredentials): Promise<any> {
+  return fetchPost({ action: "deletequestion", id, ...auth });
 }
 
-export async function apiDeleteComment(questionId: string, id: string): Promise<any> {
-  return fetchPost({ action: "deletecomment", questionId, id });
+export async function apiUpdateQuestion(id: string, text: string, topics: string[], auth: AuthCredentials): Promise<any> {
+  return fetchPost({ action: "updatequestion", id, text, topics, ...auth });
 }
 
-export async function apiUpdateComment(questionId: string, id: string, text: string): Promise<any> {
-  return fetchPost({ action: "updatecomment", questionId, id, text });
+export async function apiDeleteComment(questionId: string, id: string, auth: AuthCredentials): Promise<any> {
+  return fetchPost({ action: "deletecomment", questionId, id, ...auth });
+}
+
+export async function apiUpdateComment(questionId: string, id: string, text: string, auth: AuthCredentials): Promise<any> {
+  return fetchPost({ action: "updatecomment", questionId, id, text, ...auth });
 }
