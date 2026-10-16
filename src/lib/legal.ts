@@ -1,7 +1,7 @@
 // 이용약관·개인정보 처리방침에 공통으로 쓰이는 운영자 정보.
 // 운영자 정보가 바뀌면 이 파일만 수정하면 두 문서에 함께 반영된다.
 export const SERVICE_NAME = "질문 스페이스(Question Space)";
-export const SERVICE_URL = "https://chichiboo123.github.io/Question-Space/";
+export const SERVICE_URL = "https://qtspace.chichiboo.link/";
 
 export const OPERATOR = {
   name: "교육뮤지컬 꿈꾸는 치수쌤",
