@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Trash2, Pencil, Check, X } from "lucide-react";
 import StarField from "@/components/StarField";
+import Footer from "@/components/Footer";
 import { TOPICS } from "@/lib/questions";
 import { apiGetAllQuestions, apiDeleteQuestion, apiUpdateQuestion, Question } from "@/lib/api";
 import { useLang, getTopicLabelI18n } from "@/lib/i18n";
@@ -207,6 +208,8 @@ export default function Admin() {
             ))}
           </div>
         )}
+
+        <Footer />
       </div>
     </div>
   );

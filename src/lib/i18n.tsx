@@ -129,6 +129,17 @@ const translations = {
 
   // Load more
   loadMore: { ko: "더보기", en: "Load more", ja: "もっと見る", id: "Lihat lagi" },
+
+  // Legal (footer / terms / privacy)
+  termsOfService: { ko: "이용약관", en: "Terms of Service", ja: "利用規約", id: "Ketentuan Layanan" },
+  privacyPolicy: { ko: "개인정보 처리방침", en: "Privacy Policy", ja: "個人情報処理方針", id: "Kebijakan Privasi" },
+  effectiveDate: { ko: "시행일", en: "Effective date", ja: "施行日", id: "Tanggal berlaku" },
+  legalKoreanNotice: {
+    ko: "",
+    en: "This document is provided in Korean. The Korean version is the legally binding version.",
+    ja: "この文書は韓国語で提供されています。韓国語版が法的効力を持つ正式な版です。",
+    id: "Dokumen ini disediakan dalam bahasa Korea. Versi bahasa Korea adalah versi yang mengikat secara hukum.",
+  },
 } as const;
 
 type TranslationKey = keyof typeof translations;

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Send, Pencil, Trash2, Check, X } from "lucide-react";
 import StarField from "@/components/StarField";
+import Footer from "@/components/Footer";
 import SatelliteIcon from "@/components/SatelliteIcon";
 import { TOPICS } from "@/lib/questions";
 import {
@@ -485,6 +486,8 @@ export default function QuestionDetail() {
             {commentText.length}/500
           </p>
         </div>
+
+        <Footer />
       </div>
     </div>
   );
