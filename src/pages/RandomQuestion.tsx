@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Shuffle } from "lucide-react";
 import StarField from "@/components/StarField";
+import Footer from "@/components/Footer";
 import SatelliteIcon from "@/components/SatelliteIcon";
 import { apiGetRandomQuestion, Question } from "@/lib/api";
 import { useLang } from "@/lib/i18n";
@@ -72,6 +73,8 @@ export default function RandomQuestion() {
           <Shuffle size={20} />
           {t("anotherQuestion")}
         </button>
+
+        <Footer className="mt-auto pt-12" />
       </div>
     </div>
   );

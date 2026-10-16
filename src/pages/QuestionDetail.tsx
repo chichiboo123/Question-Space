@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Send, Pencil, Trash2, Check, X } from "lucide-react";
 import StarField from "@/components/StarField";
+import Footer from "@/components/Footer";
 import SatelliteIcon from "@/components/SatelliteIcon";
 import { TOPICS } from "@/lib/questions";
 import {
@@ -16,6 +17,8 @@ import {
 } from "@/lib/api";
 import {
   addMyComment,
+  getMyCommentToken,
+  getMyQuestionToken,
   isMyComment,
   isMyQuestion,
   removeMyComment,
@@ -108,8 +111,8 @@ export default function QuestionDetail() {
     if (submitting) return;
     setSubmitting(true);
     try {
-      const newComment = await apiAddComment(question.id, commentAuthor.trim(), trimmedText);
-      addMyComment(newComment.id);
+      const { comment: newComment, ownerToken } = await apiAddComment(question.id, commentAuthor.trim(), trimmedText);
+      addMyComment(newComment.id, ownerToken);
       setQuestion(prev => prev ? { ...prev, comments: [...prev.comments, newComment] } : prev);
       setCommentText("");
       setLastCommentTime(Date.now());
@@ -141,7 +144,9 @@ export default function QuestionDetail() {
 
     setSavingQuestion(true);
     try {
-      await apiUpdateQuestion(question.id, editQText.trim(), editQTopics);
+      await apiUpdateQuestion(question.id, editQText.trim(), editQTopics, {
+        ownerToken: getMyQuestionToken(question.id),
+      });
       const refreshed = await apiGetQuestionById(question.id);
       if (refreshed) setQuestion(refreshed);
       setEditingQuestion(false);
@@ -157,7 +162,7 @@ export default function QuestionDetail() {
   const handleDeleteQuestion = async () => {
     if (!window.confirm(t("confirmDeleteQuestion"))) return;
     try {
-      await apiDeleteQuestion(question.id);
+      await apiDeleteQuestion(question.id, { ownerToken: getMyQuestionToken(question.id) });
       removeMyQuestion(question.id);
       toast.success(t("toastQuestionDeleted"));
       navigate("/questions");
@@ -179,7 +184,9 @@ export default function QuestionDetail() {
 
     setSavingComment(true);
     try {
-      await apiUpdateComment(question.id, editingCommentId, trimmed);
+      await apiUpdateComment(question.id, editingCommentId, trimmed, {
+        ownerToken: getMyCommentToken(editingCommentId),
+      });
       const refreshed = await apiGetQuestionById(question.id);
       if (refreshed) setQuestion(refreshed);
       setEditingCommentId(null);
@@ -195,7 +202,7 @@ export default function QuestionDetail() {
   const handleDeleteComment = async (commentId: string) => {
     if (!window.confirm(t("confirmDeleteComment"))) return;
     try {
-      await apiDeleteComment(question.id, commentId);
+      await apiDeleteComment(question.id, commentId, { ownerToken: getMyCommentToken(commentId) });
       removeMyComment(commentId);
       setQuestion(prev =>
         prev ? { ...prev, comments: prev.comments.filter((c) => c.id !== commentId) } : prev
@@ -485,6 +492,8 @@ export default function QuestionDetail() {
             {commentText.length}/500
           </p>
         </div>
+
+        <Footer />
       </div>
     </div>
   );

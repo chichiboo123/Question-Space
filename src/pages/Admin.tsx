@@ -3,18 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Trash2, Pencil, Check, X } from "lucide-react";
 import StarField from "@/components/StarField";
+import Footer from "@/components/Footer";
 import { TOPICS } from "@/lib/questions";
-import { apiGetAllQuestions, apiDeleteQuestion, apiUpdateQuestion, Question } from "@/lib/api";
+import { apiGetAllQuestions, apiDeleteQuestion, apiUpdateQuestion, apiAdminLogin, Question } from "@/lib/api";
 import { useLang, getTopicLabelI18n } from "@/lib/i18n";
 import { toast } from "sonner";
-
-const ADMIN_PASSWORD = "nsn2865";
 
 export default function Admin() {
   const navigate = useNavigate();
   const { t, lang } = useLang();
   const [authenticated, setAuthenticated] = useState(false);
+  // 비밀번호는 서버(Apps Script)에서만 확인한다. 입력값은 이 화면에 머무는 동안 메모리에만 보관한다.
   const [password, setPassword] = useState("");
+  const [loggingIn, setLoggingIn] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
   const [editTopics, setEditTopics] = useState<string[]>([]);
@@ -33,19 +34,31 @@ export default function Admin() {
     if (authenticated) loadQuestions();
   }, [authenticated]);
 
-  const handleLogin = () => {
-    if (password === ADMIN_PASSWORD) {
-      setAuthenticated(true);
-      toast.success(t("adminLoginSuccess"));
-    } else {
-      toast.error(t("adminLoginFail"));
+  const handleLogin = async () => {
+    if (!password || loggingIn) return;
+    setLoggingIn(true);
+    try {
+      if (await apiAdminLogin(password)) {
+        setAuthenticated(true);
+        toast.success(t("adminLoginSuccess"));
+      } else {
+        toast.error(t("adminLoginFail"));
+      }
+    } catch {
+      toast.error(t("adminLoginError"));
+    } finally {
+      setLoggingIn(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    await apiDeleteQuestion(id);
-    setQuestions(prev => prev.filter(q => q.id !== id));
-    toast.success(t("adminDeleted"));
+    try {
+      await apiDeleteQuestion(id, { adminPassword: password });
+      setQuestions(prev => prev.filter(q => q.id !== id));
+      toast.success(t("adminDeleted"));
+    } catch {
+      toast.error("Failed to delete question");
+    }
   };
 
   const handleEdit = (id: string, text: string, topics: string[]) => {
@@ -62,10 +75,14 @@ export default function Admin() {
 
   const handleSave = async () => {
     if (editingId && editText.trim() && editTopics.length > 0) {
-      await apiUpdateQuestion(editingId, editText.trim(), editTopics);
-      setEditingId(null);
-      loadQuestions();
-      toast.success(t("adminSaved"));
+      try {
+        await apiUpdateQuestion(editingId, editText.trim(), editTopics, { adminPassword: password });
+        setEditingId(null);
+        loadQuestions();
+        toast.success(t("adminSaved"));
+      } catch {
+        toast.error("Failed to update question");
+      }
     }
   };
 
@@ -91,7 +108,8 @@ export default function Admin() {
             />
             <button
               onClick={handleLogin}
-              className="w-full py-3 rounded-xl bg-secondary text-secondary-foreground text-lg hover:brightness-110 transition-all"
+              disabled={loggingIn}
+              className="w-full py-3 rounded-xl bg-secondary text-secondary-foreground text-lg hover:brightness-110 transition-all disabled:opacity-50"
             >
               {t("adminEnter")}
             </button>
@@ -207,6 +225,8 @@ export default function Admin() {
             ))}
           </div>
         )}
+
+        <Footer />
       </div>
     </div>
   );

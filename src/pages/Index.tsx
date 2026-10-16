@@ -6,6 +6,7 @@ import StarField from "@/components/StarField";
 import SatelliteIcon from "@/components/SatelliteIcon";
 import LangSwitcher from "@/components/LangSwitcher";
 import HelpButton from "@/components/HelpButton";
+import Footer from "@/components/Footer";
 import { TOPICS } from "@/lib/questions";
 import { apiGetAllQuestions, apiAddQuestion, Question } from "@/lib/api";
 import { addMyQuestion } from "@/lib/ownership";
@@ -57,8 +58,8 @@ export default function Index() {
 
     setLaunching(true);
     try {
-      const newQ = await apiAddQuestion(author.trim(), text.trim(), finalTopics);
-      addMyQuestion(newQ.id);
+      const { question: newQ, ownerToken } = await apiAddQuestion(author.trim(), text.trim(), finalTopics);
+      addMyQuestion(newQ.id, ownerToken);
       setQuestions(prev => [newQ, ...prev]);
       setText("");
       setSelectedTopics([]);
@@ -283,17 +284,7 @@ export default function Index() {
           </div>
         )}
 
-        {/* Footer */}
-        <footer className="mt-12 mb-4 text-center">
-          <a
-            href="https://litt.ly/chichiboo"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors"
-          >
-            created by. 교육뮤지컬 꿈꾸는 치수쌤
-          </a>
-        </footer>
+        <Footer />
 
         <button
           onClick={() => navigate("/admin")}

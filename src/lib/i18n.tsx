@@ -113,6 +113,12 @@ const translations = {
   adminSaved: { ko: "수정 완료! ✏️", en: "Saved! ✏️", ja: "修正完了！✏️", id: "Disimpan! ✏️" },
   adminLoginSuccess: { ko: "관리자 모드 활성화! 🔓", en: "Admin mode activated! 🔓", ja: "管理者モード有効化！🔓", id: "Mode admin diaktifkan! 🔓" },
   adminLoginFail: { ko: "비밀번호가 틀렸어요! 🔒", en: "Wrong password! 🔒", ja: "パスワードが違います！🔒", id: "Kata sandi salah! 🔒" },
+  adminLoginError: {
+    ko: "지금은 로그인할 수 없어요. 잠시 후 다시 시도해 주세요.",
+    en: "Can't log in right now. Please try again later.",
+    ja: "今はログインできません。しばらくしてからもう一度お試しください。",
+    id: "Tidak bisa masuk sekarang. Silakan coba lagi nanti.",
+  },
 
   // Topics
   topicImagination: { ko: "💭 상상", en: "💭 Imagination", ja: "💭 想像", id: "💭 Imajinasi" },
@@ -129,6 +135,17 @@ const translations = {
 
   // Load more
   loadMore: { ko: "더보기", en: "Load more", ja: "もっと見る", id: "Lihat lagi" },
+
+  // Legal (footer / terms / privacy)
+  termsOfService: { ko: "이용약관", en: "Terms of Service", ja: "利用規約", id: "Ketentuan Layanan" },
+  privacyPolicy: { ko: "개인정보 처리방침", en: "Privacy Policy", ja: "個人情報処理方針", id: "Kebijakan Privasi" },
+  effectiveDate: { ko: "시행일", en: "Effective date", ja: "施行日", id: "Tanggal berlaku" },
+  legalKoreanNotice: {
+    ko: "",
+    en: "This document is provided in Korean. The Korean version is the legally binding version.",
+    ja: "この文書は韓国語で提供されています。韓国語版が法的効力を持つ正式な版です。",
+    id: "Dokumen ini disediakan dalam bahasa Korea. Versi bahasa Korea adalah versi yang mengikat secara hukum.",
+  },
 } as const;
 
 type TranslationKey = keyof typeof translations;
